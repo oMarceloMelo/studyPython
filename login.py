@@ -81,7 +81,6 @@ def optionSelectEnd():
 	else:
 		pass
 
-
 #definindo numero de usuários para cadastro
 #cadastrando em um arquivo txt
 def createAccount():
@@ -91,13 +90,13 @@ def createAccount():
 	users_login = int(users_login)
 	i = 0
 	end_while = False
-	with open('/home/marcelo/Documentos/programas/studyPython/ref_users_saved.txt', 'r') as f:
+	with open('/home/marcelokoper/Documentos/studyPython/ref_users_saved.txt', 'r') as f:
 		userid = len(f.readlines()) + 1
 		f.close()
 	while i < users_login:
 		account_name = str(input('\n'+'Digite seu nome de usuário para cadastro: '))
 		account_password = input('\n'+'Digite uma senha para cadastro: '+'\n')
-		ref_users_saved = open('/home/marcelo/Documentos/programas/studyPython/ref_users_saved.txt', 'r')
+		ref_users_saved = open('/home/marcelokoper/Documentos/studyPython/ref_users_saved.txt', 'r')
 		list_users = ref_users_saved.readlines()
 		for line in list_users:
 			value_line = line.split(':')
@@ -112,7 +111,7 @@ def createAccount():
 				continue
 		ref_users_saved.close()
 		if end_while == False:
-			with open('/home/marcelo/Documentos/programas/studyPython/ref_users_saved.txt', 'a') as ref_users_saved:
+			with open('/home/marcelokoper/Documentos/studyPython/ref_users_saved.txt', 'a') as ref_users_saved:
 				ref_users_saved.write(f'{userid}:{account_name}:{account_password}' + '\n')
 			print('\n'+f'Você é o número {userid} da lista'+'\n')
 			if i < users_login:
@@ -121,7 +120,6 @@ def createAccount():
 		print('****'*10 + '\n')
 		if i == users_login:
 			exibirMenu()
-	return account_name, account_password
 
 #Entrando na conta
 def login():
@@ -130,24 +128,19 @@ def login():
 	while login == False and try_login < 3:
 		insert_account = input('\n'+'Digite seu usuário para entrar: ')
 		insert_password = input('Digite sua senha para entrar: ')
-		ref_users_saved = open('/home/marcelo/Documentos/programas/studyPython/ref_users_saved.txt', 'r')
+		ref_users_saved = open('/home/marcelokoper/Documentos/studyPython/ref_users_saved.txt', 'r')
 		list_users = ref_users_saved.readlines()
 		for list_u in list_users:
 			value_lines = list_u.split(':')
 			value_lines[2] = value_lines[2].rstrip('\n')
 			if insert_account == value_lines[1] and insert_password == value_lines[2]:
-				if insert_account == 'marcelo' and insert_password == 'pikadasgalaxias':
-					print('\n'+'Bem vindo ó marcelo pika das galáxias, obrigado por mais um dia sendo nosso pika das galáxias ó marcelo!! uma excelente semana para você'+'\n')
-					login = True
-					optionSelectLogin()
-				else:
-					print('\n'+f'Realizado login {insert_account}, você é o usuário {value_lines[0]}')
-					login = True
-					optionSelectLogin()
+				print('\n'+f'Realizado login {insert_account}, você é o usuário {value_lines[0]}')
+				login = True
+				optionSelectLogin()
 				break
 			else:
 				print('\n'+'Usuário ou senha inválidos, por favor digite novamente :)' + '\n')
-				break
+				continue
 		try_login = try_login + 1
 		if try_login >= 3:
 			print('Máximo de tentativas realizadas (3 de 3), por favor tente mais tarde!')
@@ -162,7 +155,7 @@ def findUsers():
 	askAction = 0
 	while find == False:
 		insert_account = input('Digite o usuário: ')
-		ref_users_saved = open('/home/marcelo/Documentos/programas/studyPython/ref_users_saved.txt', 'r')
+		ref_users_saved = open('/home/marcelokoper/Documentos/studyPython/ref_users_saved.txt', 'r')
 		list_users = ref_users_saved.readlines()
 		for list_u in list_users:
 			value_lines = list_u.split(':')
@@ -185,23 +178,22 @@ def findUsers():
 #deletar usuário
 def deleteUsers():
 	insert_account = input('\n'+'Digite o usuário para deletar: ')
-	ref_users_saved = open('/home/marcelo/Documentos/programas/studyPython/ref_users_saved.txt', 'r')
+	ref_users_saved = open('/home/marcelokoper/Documentos/studyPython/ref_users_saved.txt', 'r')
 	list_users = ref_users_saved.readlines()
-	for list_u in list_users:
-		value_lines = list_u.split(':')
-		if insert_account == value_lines[1]:
-			if insert_account == 'marcelo':
-				print('\n'+'Você não pode excluir o marcelo pika das galáxias'+'\n')
-				optionSelectLogin()
-			else:
+	ref_users_saved.close()
+	with open('/home/marcelokoper/Documentos/studyPython/ref_users_saved.txt', 'w') as ref_users_saved:
+		for list_u in list_users:
+			value_lines = list_u.split(':')
+			print(f'INSERTACC: {insert_account}'+'\n'+'account_name: '+value_lines[1])
+			if insert_account != value_lines[1]:
 				print('\n'+f'Deletando usuário {insert_account}')
-				value_lines[1]
+				ref_users_saved.write(list_u)
+				ref_users_saved.close()
 				optionSelectLogin()
-			break
-		else:
-			print('\n'+'Usuário inválido, por favor digite novamente :)' + '\n')
-			optionSelectLogin()
-			continue
+				break
+			else:
+				print('\n'+'Usuário não existe' + '\n')
+				continue
 
 #menu
 def exibirMenu():
